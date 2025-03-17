@@ -1,0 +1,15 @@
+Omega = 14.14 
+kappa    = 0.0 	// coefficient for friction
+m        = 0.075 // mass
+L        = 0.08 // length
+B1       = 0.002	//  B1 part of magnetic fields (oscillating part amplitude)
+B0       = 0.01 //  B0 part of magnetic fields (static part amplitude)
+mu       = 0.2  //  magnetic moment 
+theta0    = 0.001 // initial condition in theta
+thetadot0 = 0 // initial condition in thetadot
+sampling = 1  // number of time steps between two writings on file
+N_excit  = 100  // number of periods of excitation
+Nperiod  = 3  // number of periods of oscillation of the eigenmode
+nsteps   = 1000 // number of time steps per period
+
+
