@@ -86,6 +86,5 @@ for i in range(2):
     plt.grid()
     plt.savefig(f'error_{i+1}.png')
     plt.show()
-    print(f"Plot saved as 'error_{i+1}.png'")
 
 
