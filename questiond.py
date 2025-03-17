@@ -22,7 +22,7 @@ def read_in_file(filename):
                     print(f"Warning: Could not convert '{value}' to number. Check {filename}.")
     return variables
 
-repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum"  # Windows path format
+repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"  # Windows path format
 executable = os.path.join(repertoire, "Exe.exe")
 os.chdir(repertoire)
 
@@ -30,27 +30,37 @@ input_filename = "configb.in"
 
 params = read_in_file(input_filename)
 
-mu = params.get("mu", 0.0)
-B0 = params.get("B0", 0.0)
-m = params.get("m", 0.0)
-L = params.get("L", 0.0)
+mu = params.get("mu")
+B0 = params.get("B0")
+m = params.get("m")
+L = params.get("L")
 w0 = np.sqrt(12 * mu * B0 / (m * L**2))
 
-nsteps = np.array([2000], dtype=int)
-ci = np.array([0, 1e-6, np.pi / 2 , np.pi / 2 + 1e-6], dtype=float)
+# Define initial conditions (theta0, thetadot0)
+nsteps = np.array([1000], dtype=int)
+ci = np.array([
+    [2.665594, 0],
+    [2.665595, 0],
+    [4.379190, 0],
+    [4.379191, 0]
+], dtype=float)
+
 nsimul = len(nsteps) * len(ci)
 
 paramstr1 = "nsteps"
 paramstr2 = "theta0"
+paramstr3 = "thetadot0"  # New parameter for thetadot0
 
 outputs = []
 
 for n in nsteps:
-    for theta0 in ci:
-        output_file = f"{paramstr1}={n}_theta0={theta0:.7f}.out"
+    for theta0, thetadot0 in ci:
+        output_file = f"{paramstr1}={n}_theta0={theta0:.7f}_thetadot0={thetadot0:.7f}.out"
         outputs.append(output_file)
 
-        cmd = f'"{executable}" {input_filename} {paramstr1}={n} {paramstr2}={theta0:.15g} output={output_file}'
+        cmd = (
+            f'"{executable}" {input_filename} {paramstr1}={n} {paramstr2}={theta0:.15g} {paramstr3}={thetadot0:.15g} output={output_file}'
+        )
 
         print(f"\n Running command: {cmd}")
 
@@ -61,7 +71,6 @@ for n in nsteps:
         else:
             print(f"ERROR: The output file '{output_file}' was NOT created!")
 
-plt.figure(figsize=(8, 5))
 thetas = []
 thetas_dot = []
 
@@ -76,15 +85,29 @@ for i in range(nsimul):
 
 thetas = np.column_stack(thetas)  # Shape: (n_time_steps, n_simul)
 thetas_dot = np.column_stack(thetas_dot)  # Shape: (n_time_steps, n_simul)
-for i in range(2):
-    delta = np.sqrt(w0**2*(thetas[:,i+1] - thetas[:,i])**2 + (thetas_dot[:,i+1] - thetas_dot[:,i])**2)
-    print(f"Max error for simulation {i+1}: {np.max(delta)}")
-    plt.plot(t, delta)
-    plt.xlabel('t [s]')
-    plt.ylabel(r'$\delta_{ab}$')
-    plt.legend()
-    plt.grid()
-    plt.savefig(f'error_{i+1}.png')
-    plt.show()
 
+plt.figure(figsize=(8, 5))
 
+# Compute deltas
+delta1 = np.sqrt(w0**2 * (thetas[:, 1] - thetas[:, 0])**2 + (thetas_dot[:, 1] - thetas_dot[:, 0])**2)
+delta2 = np.sqrt(w0**2 * (thetas[:, 3] - thetas[:, 2])**2 + (thetas_dot[:, 3] - thetas_dot[:, 2])**2)
+
+# Plot both delta values with labels
+plt.plot(t, delta1, label=r'$\delta_{12}$')
+plt.plot(t, delta2, label=r'$\delta_{34}$')
+
+# Logarithmic Fit (Optional - Uncomment if needed)
+
+slope1, intercept1 = np.polyfit(t, np.log(delta1), 1)  # Avoid log(0) by adding a small value
+slope2, intercept2 = np.polyfit(t, np.log(delta2), 1)
+
+plt.plot(t, np.exp(slope1 * t + intercept1), '--', label=f"Fit δ₁: slope={slope1:.3f}")
+plt.plot(t, np.exp(slope2 * t + intercept2), '--', label=f"Fit δ₂: slope={slope2:.3f}")'
+
+# Labels and settings
+plt.xlabel('t [s]')
+plt.ylabel(r'$\delta_{ab}$')
+plt.legend()
+plt.grid()
+plt.savefig('error.png')
+plt.show()
