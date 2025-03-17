@@ -23,7 +23,7 @@ def read_in_file(filename):
     return variables
 
 executable = './Exe2'  # Remove .exe for Mac
-repertoire = r"/Users/lilimouelle/Desktop/PHYSNUM/exo_2/Exo2PhysNum"  # Modify for correct directory
+repertoire = r"/Users/lilimouelle/Desktop/PHYSNUM/Exo2PhysNum-SLAY"  # Modify for correct directory
 os.chdir(repertoire)
 
 input_filename = 'confige.in'  # Modify according to configuration
@@ -46,10 +46,10 @@ T = 2 * np.pi / Omega  # Period of excitation
 #Parameters of the simulation
 
 
-#theta0 = np.array([2, -1, 5, -3.2, 0.8, 6.5, -7.3, 4.1, -2.9, 1.7, 3.6, -5.4, 0.2, -8.9, 7.8, -6.1, 9.4, -0.5, 1.2, -4.7], dtype=float)
-#theta_dot0 = np.array([12, -8, 0.2, -15, 5.5, 18.3, -3.1, 10.7, -20.5, 7.9, -6.2, 14.8, -11.4, 22.1, -9.8, 3.3, -13.6, 25.2, -19.1, 8.6], dtype=float)
-theta0 = np.array([2, -1], dtype=float) #1
-theta_dot0 = np.array([12, -8], dtype=float)
+theta0 = np.array([2, -1, 5, -3.2, 0.8, 6.5, -7.3, 4.1, -2.9, 1.7, 3.6, -5.4, 0.2, -8.9, 7.8, -6.1, 9.4, -0.5, 1.2, -4.7], dtype=float)
+theta_dot0 = np.array([12, -8, 0.2, -15, 5.5, 18.3, -3.1, 10.7, -20.5, 7.9, -6.2, 14.8, -11.4, 22.1, -9.8, 3.3, -13.6, 25.2, -19.1, 8.6], dtype=float)
+#theta0 = np.array([2, -1], dtype=float) #1
+#theta_dot0 = np.array([12, -8], dtype=float)
 nsimul = len(theta0)
 
 
@@ -90,5 +90,5 @@ for i in range(nsimul):
 plt.xlabel(r'$\theta$ [rad]')
 plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]')
 plt.grid()
-plt.savefig("poincare_e.png")
+plt.savefig("poincare_e_2.png",dpi=300)
 plt.show()
