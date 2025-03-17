@@ -23,7 +23,7 @@ def read_in_file(filename):
     return variables
 
 executable = './Exe2'  # Remove .exe for Mac
-repertoire = r"/Users/lilimouelle/Desktop/PHYSNUM/exo_2/Exo2PhysNum"  # Modify for correct directory
+repertoire = r"/Users/lilimouelle/Desktop/PHYSNUM/Exo2PhysNum-SLAY"  # Modify for correct directory
 os.chdir(repertoire)
 
 input_filename = 'configc.in'  # Modify according to configuration
@@ -45,8 +45,8 @@ T = 2 * np.pi / Omega  # Period of excitation
 
 #Parameters of the simulation
 
-nsimul = 30
-theta0 = np.linspace(-np.pi, np.pi, nsimul) 
+nsimul = 20
+theta0 = np.linspace(0, np.pi, nsimul) 
 theta_dot0 = np.linspace(-10, 10, nsimul)
 
 #theta0 = np.linspace(-np.pi, np.pi, nsimul) #n=10,50,30
@@ -92,5 +92,5 @@ for i in range(nsimul):
 plt.xlabel(r'$\theta$ [rad]')
 plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]')
 plt.grid()
-plt.savefig("poincare_c_3.png",dpi=200)
+plt.savefig("poincare_c_.png",dpi=300)
 plt.show()
