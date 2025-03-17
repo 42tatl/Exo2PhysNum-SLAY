@@ -92,5 +92,5 @@ for i in range(nsimul):
 plt.xlabel(r'$\theta$ [rad]')
 plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]')
 plt.grid()
-plt.savefig("poincare_c_3.png",dpi=300)
+plt.savefig("poincare_c_3.png",dpi=200)
 plt.show()
