@@ -45,20 +45,12 @@ T = 2 * np.pi / Omega  # Period of excitation
 
 #Parameters of the simulation
 
-nsimul = 20
-theta0 = np.linspace(0, np.pi, nsimul) 
+nsimul = 50
+theta0 = np.linspace(-np.pi, np.pi, nsimul) 
 theta_dot0 = np.linspace(-10, 10, nsimul)
 theta0 = np.append(theta0,1e-3)
 theta_dot0 = np.append(theta_dot0,0)
 nsimul += 1 
-
-#theta0 = np.linspace(-np.pi, np.pi, nsimul) #n=10,50,30
-#theta_dot0 = np.linspace(-10, 10, nsimul)
-
-#theta0 = np.linspace(0, np.pi, nsimul) #n=20
-#theta_dot0 = np.linspace(-10, 10, nsimul)
-
-
 
 #Creation des fichiers de simulations automatiquement pour diff nsteps
 outputs = []  
@@ -77,23 +69,21 @@ theta_all = []
 theta_dot_all = []
 for i in range(nsimul):
     data = np.loadtxt(outputs[i])
-    t_all.append(data[:, 0])  
-    #theta_all.append(np.mod(data[:, 1], 2*np.pi)) 
+    t_all.append(data[:, 0])   
     theta_all.append((data[:, 1] + np.pi) % (2*np.pi) - np.pi)
-    #theta_all.append(data[:, 1])
     theta_dot_all.append(data[:, 2])
 
 
 # Poincaré section
-colors = plt.cm.rainbow(np.linspace(0, 1, nsimul))  # Palette de couleurs
+colors = plt.cm.rainbow(np.linspace(0, 1, nsimul))  
 
 for i in range(nsimul):
-    #plt.scatter(theta_all[i], theta_dot_all[i], s=0.1, color=colors[i])
-    plt.scatter(theta_all[i], theta_dot_all[i], s=0.1)
-#plt.scatter(theta_all, theta_dot_all, s=0.1)
-plt.xlabel(r'$\theta$ [rad]')
-plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]')
+    plt.scatter(theta_all[i], theta_dot_all[i], s=0.1,)
+plt.xlabel(r'$\theta$ [rad]',fontsize=16)
+plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]',fontsize=16)
+plt.xticks(fontsize=12)  
+plt.yticks(fontsize=12)
 plt.grid()
-plt.savefig("poincare_c4.png",dpi=300)
+plt.tight_layout()
+plt.savefig("poincare_c3.png",dpi=300)
 plt.show()
-#hello
