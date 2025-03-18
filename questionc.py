@@ -96,3 +96,4 @@ plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]')
 plt.grid()
 plt.savefig("poincare_c4.png",dpi=300)
 plt.show()
+#hello
