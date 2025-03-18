@@ -25,7 +25,7 @@ def read_in_file(filename):
     return variables
 
 # Define executable path
-repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum"  # Correct Windows path
+repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"  # Correct Windows path
 executable = os.path.join(repertoire, "Exe.exe")  # Ensure proper joining
 
 # Change directory to where the executable is located

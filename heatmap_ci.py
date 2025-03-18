@@ -4,7 +4,7 @@ import fonctions as fct  # Assuming this module contains `read_in_file` and `run
 import matplotlib.pyplot as plt
 
 # Define paths
-repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum"
+repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"
 executable = os.path.join(repertoire, "Exe.exe")
 os.chdir(repertoire)
 
@@ -15,7 +15,7 @@ input_filename = "configb.in"
 params = fct.read_in_file(input_filename)
 
 # Extract parameters
-theta0, thetadot0, mu, B0, m, L, w0 = fct.get_params(params)
+theta0_a, thetadot0, mu, B0, m, L, w0 = fct.get_params(params)
 
 # Function to run simulations for theta0 and theta0 + 1e-6
 def run_sim(nsteps, ci_theta0, thetadot0):
@@ -74,12 +74,9 @@ def compute_lyapunov_exponent(t, theta_a, theta_dot_a, theta_b, theta_dot_b, w0)
     Returns:
     - float: Estimated Lyapunov exponent.
     """
-    delta_0 = 1e-6
-    delta_t = np.sqrt(w0**2 * (theta_b - theta_a)**2 + (theta_dot_b - theta_dot_a)**2)
-    delta_t_fin = delta_t[:-1]
-    t_fin = t[:-1]
-    lambda_value = np.log(delta_t_fin / delta_0) / t_fin
-    return lambda_value
+    delta = np.sqrt(w0**2 * (theta_b - theta_a)**2 + (theta_dot_b - theta_dot_a)**2)
+    slope, intercept = np.polyfit(t, np.log(delta), 1)
+    return slope
 
 # Main function that runs simulations and computes Lyapunov exponents
 def exp(nsteps, ci_theta0, thetadot0):
@@ -125,11 +122,21 @@ def exp(nsteps, ci_theta0, thetadot0):
 
 # Example Usage:
 nsteps = np.array([1000], dtype=int)
-ci_theta0 = np.linspace(0, 2*np.pi, 20)
+ci_theta0 = np.linspace(0, 2*np.pi, 100)
 
 lyapunov_results = exp(nsteps, ci_theta0, thetadot0)
+values = list(lyapunov_results.values())
+min_key = min(lyapunov_results, key=lyapunov_results.get)
+max_key = max(lyapunov_results, key=lyapunov_results.get)
 
-values = np.array(list(lyapunov_results.values()))
+# Get the corresponding values
+lyap_min = lyapunov_results[min_key]
+lyap_max = lyapunov_results[max_key]
+
+# Print results directly
+print(f"🔹 Minimum Lyapunov Exponent: {lyap_min:.6f} at {min_key}")
+print(f"🔺 Maximum Lyapunov Exponent: {lyap_max:.6f} at {max_key}")
+
 plt.plot(ci_theta0, values, '+')
 plt.xlabel('theta0')
 plt.ylabel('Lyapunov Exponent')
