@@ -44,12 +44,10 @@ Omega = 2 * np.sqrt(12 * mu * B0 / (m * L**2))
 T = 2 * np.pi / Omega  # Period of excitation
 
 #Parameters of the simulation
-
-
-theta0 = np.array([2, -1, 5, -3.2, 0.8, 6.5, -7.3, 4.1, -2.9, 1.7, 3.6, -5.4, 0.2, -8.9, 7.8, -6.1, 9.4, -0.5, 1.2, -4.7], dtype=float)
-theta_dot0 = np.array([12, -8, 0.2, -15, 5.5, 18.3, -3.1, 10.7, -20.5, 7.9, -6.2, 14.8, -11.4, 22.1, -9.8, 3.3, -13.6, 25.2, -19.1, 8.6], dtype=float)
-#theta0 = np.array([2, -1], dtype=float) #1
+#theta0 = np.array([2, -1], dtype=float) #first simulation
 #theta_dot0 = np.array([12, -8], dtype=float)
+theta0 = np.array([2, -1, 5, -3.2, 0.8, 6.5, -7.3, 4.1, -2.9, 1.7, 3.6, -5.4, 0.2, -8.9, 7.8, -6.1, 9.4, -0.5, 1.2, -4.7], dtype=float) #second simulation
+theta_dot0 = np.array([12, -8, 0.2, -15, 5.5, 18.3, -3.1, 10.7, -20.5, 7.9, -6.2, 14.8, -11.4, 22.1, -9.8, 3.3, -13.6, 25.2, -19.1, 8.6], dtype=float)
 nsimul = len(theta0)
 
 
@@ -72,23 +70,18 @@ theta_dot_all = []
 for i in range(nsimul):
     data = np.loadtxt(outputs[i])
     t_all.append(data[:, 0])  
-    #theta_all.append(np.mod(data[:, 1], 2*np.pi)) # Modulo 2pi
     theta_all.append((data[:, 1] + np.pi) % (2*np.pi) - np.pi)
     theta_dot_all.append(data[:, 2])
 
-'''
-total_points = sum(len(theta) for theta in theta_all)
-print(f"Nombre total de points sélectionnés: {total_points}")
-'''
-
-#plt.figure(figsize=(8, 6))
-#plt.scatter(theta_all, theta_dot_all, s=10, color='b', alpha=0.7)
-colors = plt.cm.viridis(np.linspace(0, 1, nsimul))  # Palette de couleurs
-
+# Plot
+colors = plt.cm.viridis(np.linspace(0, 1, nsimul)) 
 for i in range(nsimul):
     plt.scatter(theta_all[i], theta_dot_all[i], s=1, color=colors[i], alpha=0.7)
-plt.xlabel(r'$\theta$ [rad]')
-plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]')
+plt.xlabel(r'$\theta$ [rad]',fontsize=16)
+plt.ylabel(r'$\dot{\theta}$ [rad $\cdot$ s$^{-1}$]',fontsize=16)
+plt.xticks(fontsize=12)  
+plt.yticks(fontsize=12)
 plt.grid()
+plt.tight_layout()
 plt.savefig("poincare_e_2.png",dpi=300)
 plt.show()
