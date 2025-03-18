@@ -83,13 +83,14 @@ for i in range(nsimul):
 
 plt.plot(delta_ts_squared, theta_fins, marker='o', linestyle='-', color='b', label='Error vs. Steps')
 plt.xlabel(r'$(\Delta t)^2$')
-plt.ylabel(r'Error on $\theta_{fin}$')
+plt.ylabel(r'$\theta_{fin}$')
 plt.grid(True)
 plt.legend()
 plt.gca().xaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
 plt.ticklabel_format(style='sci', axis='x', scilimits=(-4, 4)) 
 plt.gca().yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
 plt.ticklabel_format(style='sci', axis='y', scilimits=(-4, 4)) 
+plt.tight_layout()
 plt.savefig("error_theta_fin.pdf")
 plt.show()
 
