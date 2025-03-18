@@ -39,10 +39,10 @@ w0 = np.sqrt(12 * mu * B0 / (m * L**2))
 # Define initial conditions (theta0, thetadot0)
 nsteps = np.array([1000], dtype=int)
 ci = np.array([
-    [2.665594, 0],
-    [2.665595, 0],
-    [4.379190, 0],
-    [4.379191, 0]
+    [0, 0],
+    [-(1e-6), 0],
+    [-2.697327, 0],
+    [-2.697326, 0]
 ], dtype=float)
 
 nsimul = len(nsteps) * len(ci)
@@ -92,17 +92,19 @@ plt.figure(figsize=(8, 5))
 delta1 = np.sqrt(w0**2 * (thetas[:, 1] - thetas[:, 0])**2 + (thetas_dot[:, 1] - thetas_dot[:, 0])**2)
 delta2 = np.sqrt(w0**2 * (thetas[:, 3] - thetas[:, 2])**2 + (thetas_dot[:, 3] - thetas_dot[:, 2])**2)
 
-# Plot both delta values with labels
-plt.plot(t, delta1, label=r'$\delta_{12}$')
-plt.plot(t, delta2, label=r'$\delta_{34}$')
-
 # Logarithmic Fit (Optional - Uncomment if needed)
 
 slope1, intercept1 = np.polyfit(t, np.log(delta1), 1)  # Avoid log(0) by adding a small value
 slope2, intercept2 = np.polyfit(t, np.log(delta2), 1)
+#plt.plot(t, delta1, label=r'$\delta_{12}$')
+plt.semilogy(t, delta1, label=r'$\delta_{34}$')
+'''
+plt.semilogy(t, delta1, label=r'$\delta_{12}$')
+plt.semilogy(t, delta2, label=r'$\delta_{34}$')
 
-plt.plot(t, np.exp(slope1 * t + intercept1), '--', label=f"Fit δ₁: slope={slope1:.3f}")
-plt.plot(t, np.exp(slope2 * t + intercept2), '--', label=f"Fit δ₂: slope={slope2:.3f}")'
+plt.semilogy(t, np.exp(slope1 * t + intercept1), '--', label=f"Fit δ₁: slope={slope1:.3f}")'
+'''
+plt.semilogy(t, np.exp(slope1 * t + intercept1), '--', label=f"Fit δ₂: slope={slope1:.3f}")
 
 # Labels and settings
 plt.xlabel('t [s]')

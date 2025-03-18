@@ -55,11 +55,6 @@ theta_dot0 = np.linspace(-10, 10, nsimul)
 #theta0 = np.linspace(0, np.pi, nsimul) #n=20
 #theta_dot0 = np.linspace(-10, 10, nsimul)
 
-
-
-
-
-
 #Creation des fichiers de simulations automatiquement pour diff nsteps
 outputs = []  
 for i in range(nsimul):

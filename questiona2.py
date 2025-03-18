@@ -119,11 +119,11 @@ ref_y = ref_x**2  # A line with slope 2 in log-log space
 
 # Create the log-log plot
 plt.figure(figsize=(8, 5))
-plt.loglog(delta_t, deltas, marker='o', linestyle='-', color='b', label=r"$\delta$ Data")
+plt.loglog(delta_t, deltas, marker='o', linestyle='-', color='b', label=r"Error on $\theta$ and $\dot\theta$")
 plt.loglog(ref_x, ref_y, linestyle='--', color='r', label=r"$\sim \Delta t^2$")
 
 plt.xlabel(r"$\Delta t$ [s]")
-plt.ylabel(r"$\delta$")
+plt.ylabel(r"$\delta$ [rad/s]")
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 plt.legend()
 
