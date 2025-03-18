@@ -39,10 +39,10 @@ w0 = np.sqrt(12 * mu * B0 / (m * L**2))
 # Define initial conditions (theta0, thetadot0)
 nsteps = np.array([1000], dtype=int)
 ci = np.array([
-    [0, 0],
-    [-(1e-6), 0],
+    [1.808796, 0],
+    [1.808797, 0],
     [-2.697327, 0],
-    [-2.697326, 0]
+    [-2.697326,0]
 ], dtype=float)
 
 nsimul = len(nsteps) * len(ci)
@@ -55,7 +55,7 @@ outputs = []
 
 for n in nsteps:
     for theta0, thetadot0 in ci:
-        output_file = f"{paramstr1}={n}_theta0={theta0:.7f}_thetadot0={thetadot0:.7f}.out"
+        output_file = f"{paramstr1}={n}_theta0={theta0:.10f}_thetadot0={thetadot0:.10f}.out"
         outputs.append(output_file)
 
         cmd = (
@@ -96,20 +96,22 @@ delta2 = np.sqrt(w0**2 * (thetas[:, 3] - thetas[:, 2])**2 + (thetas_dot[:, 3] - 
 
 slope1, intercept1 = np.polyfit(t, np.log(delta1), 1)  # Avoid log(0) by adding a small value
 slope2, intercept2 = np.polyfit(t, np.log(delta2), 1)
-#plt.plot(t, delta1, label=r'$\delta_{12}$')
-plt.semilogy(t, delta1, label=r'$\delta_{34}$')
-'''
-plt.semilogy(t, delta1, label=r'$\delta_{12}$')
-plt.semilogy(t, delta2, label=r'$\delta_{34}$')
 
-plt.semilogy(t, np.exp(slope1 * t + intercept1), '--', label=f"Fit δ₁: slope={slope1:.3f}")'
-'''
-plt.semilogy(t, np.exp(slope1 * t + intercept1), '--', label=f"Fit δ₂: slope={slope1:.3f}")
-
-# Labels and settings
+plt.plot(t, delta1, label=rf'$\delta_{{\theta_1}}, \ \lambda = {slope1:.3f}$')
+plt.plot(t, delta2, label=rf'$\delta_{{\theta_2}}, \ \lambda = {slope2:.3f}$')
 plt.xlabel('t [s]')
 plt.ylabel(r'$\delta_{ab}$')
 plt.legend()
 plt.grid()
 plt.savefig('error.png')
+plt.show()
+
+plt.figure(figsize=(8, 5))
+plt.semilogy(t, delta2, label=r'$\delta_{\theta_2}$')
+plt.semilogy(t, np.exp(slope2 * t + intercept2), '--', label=rf'Fit : $\delta_{{\theta_2}}, \ \lambda = {slope2:.3f}$')
+plt.xlabel('t [s]')
+plt.ylabel(r'$ln(\delta_{ab})$')
+plt.legend()
+plt.grid()
+plt.savefig('error1.png')
 plt.show()
