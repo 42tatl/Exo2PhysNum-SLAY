@@ -33,40 +33,22 @@ def get_params(params):
     return theta0, thetadot0, mu, B0, m, L, w0
 
 def run_simulation(executable, input_filename, output_template, **params):
-    """
-    Runs a simulation with an arbitrary number of parameters.
 
-    Parameters:
-    - executable (str): Path to the executable file.
-    - input_filename (str): Input configuration file name.
-    - output_template (str): Template string for the output filename.
-    - **params: Arbitrary number of named parameters for the command.
-
-    Returns:
-    - output_file (str): The generated output filename.
-    - result (subprocess.CompletedProcess): The result of the subprocess execution.
-    """
-    # Create output filename dynamically based on parameters
     output_filename = output_template.format(**params)
     
-    # Construct command dynamically
     param_str = " ".join(f"{key}={value:.15g}" for key, value in params.items())
     cmd = f'"{executable}" {input_filename} {param_str} output={output_filename}'
 
-    # Debugging print
-    print(f"\n📢 Running command: {cmd}")
+    print(f"\n Running command: {cmd}")
 
-    # Run the command
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 
-    # Print command outputs
-    print("🟢 Command Output:", result.stdout)
-    print("🔴 Command Error:", result.stderr)
+    print(" Command Output:", result.stdout)
+    print(" Command Error:", result.stderr)
 
-    # Check if the output file was created
     if os.path.exists(output_filename):
-        print(f"✅ SUCCESS: Output file '{output_filename}' was created!")
+        print(f" SUCCESS: Output file '{output_filename}' was created!")
     else:
-        print(f"❌ ERROR: The output file '{output_filename}' was NOT created!")
+        print(f" ERROR: The output file '{output_filename}' was NOT created!")
 
     return output_filename, result

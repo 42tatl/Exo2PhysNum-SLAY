@@ -1,6 +1,6 @@
 import numpy as np
 import os
-import functions as fct  # Assuming this module contains `read_in_file` and `run_simulation`
+import functions as fct  
 import matplotlib.pyplot as plt
 
 repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"
@@ -52,7 +52,7 @@ def exp(nsteps, ci_theta0, thetadot0):
     lyapunov_exponents = {}
     for theta0, (file_a, file_b) in output_files.items():
         if os.path.exists(file_a) and os.path.exists(file_b):
-            print(f"✅ Reading files: {file_a} and {file_b}")
+            print(f" Reading files: {file_a} and {file_b}")
             data_a = np.loadtxt(file_a)
             data_b = np.loadtxt(file_b)
 

@@ -3,7 +3,6 @@ import subprocess
 import matplotlib.pyplot as plt
 import os
 
-# Function to read config file
 def read_in_file(filename):
     variables = {}
     with open(filename, "r") as file:
@@ -23,17 +22,13 @@ def read_in_file(filename):
                     print(f"Warning: Could not convert '{value}' to number. Check {filename}.")
     return variables
 
-# Define executable path (make sure it exists)
 repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum"  # Windows path format
 executable = os.path.join(repertoire, "Exe.exe")
 
-# Change directory to where the executable is located
 os.chdir(repertoire)
 
-# Define input config file
 input_filename = "config.a"
 
-# Read parameters from config file
 params = read_in_file(input_filename)
 
 theta0 = params.get("theta0", 0.0)
@@ -53,13 +48,11 @@ def theta_a(t):
 def theta_dot(t):
     return w0 * (B * np.cos(w0 * t) - A * np.sin(w0 * t))
 
-# Simulation parameters
 nsteps = np.array([10, 20, 50, 100], dtype=int)
 nsimul = len(nsteps)
 paramstr = "nsteps"
 param = nsteps
 
-# Create simulation output files
 outputs = []
 convergence_list = []
 
@@ -67,34 +60,29 @@ for i in range(nsimul):
     output_file = f"{paramstr}={param[i]}.out"
     outputs.append(output_file)
 
-    # Corrected command format for Windows
     cmd = f'"{executable}" {input_filename} {paramstr}={param[i]:.15g} output={output_file}'
 
-    # Debugging print
     print(f"\n📢 Running command: {cmd}")
 
-    # Run the subprocess and capture output
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 
-    # Print debugging information
-    print("🟢 Command Output:", result.stdout)
-    print("🔴 Command Error:", result.stderr)
+    print(" Command Output:", result.stdout)
+    print(" Command Error:", result.stderr)
 
-    # Check if output file was created
     if os.path.exists(output_file):
-        print(f"✅ SUCCESS: Output file '{output_file}' was created!")
+        print(f" SUCCESS: Output file '{output_file}' was created!")
     else:
-        print(f"❌ ERROR: The output file '{output_file}' was NOT created!")
+        print(f" ERROR: The output file '{output_file}' was NOT created!")
 
 print("\n🔍 Checking if output files exist before reading...\n")
 
-# Initialize the figure (✅ FIXED: Only one figure)
+# Initialize the figure ( FIXED: Only one figure)
 plt.figure(figsize=(8, 5))
 
 # Read and plot results on the same figure
 for i in range(nsimul):
     if os.path.exists(outputs[i]):  # Ensure the file exists before reading
-        print(f"✅ Reading file: {outputs[i]}")
+        print(f"Reading file: {outputs[i]}")
         data = np.loadtxt(outputs[i])
         t = data[:, 0]
         theta = data[:, 1]

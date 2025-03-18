@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import os
 from scipy.stats import linregress
 
-# Function to read config file
 def read_in_file(filename):
     variables = {}
     with open(filename, "r") as file:
@@ -24,17 +23,13 @@ def read_in_file(filename):
                     print(f"Warning: Could not convert '{value}' to number. Check {filename}.")
     return variables
 
-# Define executable path
-repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"  # Correct Windows path
-executable = os.path.join(repertoire, "Exe.exe")  # Ensure proper joining
+repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"  
+executable = os.path.join(repertoire, "Exe.exe")  
 
-# Change directory to where the executable is located
 os.chdir(repertoire)
 
-# Define input config file
 input_filename = "config.a"
 
-# Read parameters from config file
 params = read_in_file(input_filename)
 
 theta0 = params.get("theta0", 0.0)
@@ -44,32 +39,25 @@ B0 = params.get("B0", 0.0)
 m = params.get("m", 0.0)
 L = params.get("L", 0.0)
 
-# Simulation parameters
 nsteps = np.array([1000, 2500, 5000, 10000, 15000, 20000, 3e4, 35000, 4e4, 5e4], dtype=int)  
 nsimul = len(nsteps)
 paramstr = "nsteps"
 param = nsteps
 
-# Create simulation output files
 outputs = []
 for i in range(nsimul):
     output_file = f"{paramstr}={param[i]}.out"
     outputs.append(output_file)
 
-    # Corrected command format
     cmd = f'"{executable}" {input_filename} {paramstr}={param[i]:.15g} output={output_file}'
 
-    # Debugging print
-    print(f"\n📢 Running command: {cmd}")
+    print(f"\n Running command: {cmd}")
 
-    # Run the subprocess and capture output
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 
-    # Print debugging information
-    print("🟢 Command Output:", result.stdout)
-    print("🔴 Command Error:", result.stderr)
+    print(" Command Output:", result.stdout)
+    print(" Command Error:", result.stderr)
 
-    # Check if output file was created
     if os.path.exists(output_file):
         print(f"✅ SUCCESS: Output file '{output_file}' was created!")
     else:
@@ -77,12 +65,11 @@ for i in range(nsimul):
 
 print("\n🔍 Checking if output files exist before reading...\n")
 
-# Read and analyze results
 tfins = []
 theta_fins = []
 theta_dot_fins = []
 for i in range(nsimul):
-    if os.path.exists(outputs[i]):  # Ensure file exists before reading
+    if os.path.exists(outputs[i]):  
         print(f"✅ Reading file: {outputs[i]}")
         data = np.loadtxt(outputs[i])
         t = data[:, 0]
@@ -92,7 +79,6 @@ for i in range(nsimul):
     else:
         print(f"❌ Skipping missing file: {outputs[i]}")
 
-# Compute errors
 deltas = []
 delta_t = []
 w0 = np.sqrt(12 * mu * B0 / (m * L**2))
@@ -113,11 +99,9 @@ for simul in range(nsimul):
     deltas.append(delta)
     print(f"Final error: {delta:.15g} for nsteps = {param[simul]:.15g}")
 
-# Generate a reference line with slope 2
 ref_x = np.linspace(min(delta_t), max(delta_t), 100)
-ref_y = ref_x**2  # A line with slope 2 in log-log space
+ref_y = ref_x**2  
 
-# Create the log-log plot
 plt.figure(figsize=(8, 5))
 plt.loglog(delta_t, deltas, marker='o', linestyle='-', color='b', label=r"Error on $\theta$ and $\dot\theta$")
 plt.loglog(ref_x, ref_y, linestyle='--', color='r', label=r"$\sim \Delta t^2$")

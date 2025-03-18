@@ -22,7 +22,7 @@ def read_in_file(filename):
                     print(f"Warning: Could not convert '{value}' to number. Check {filename}.")
     return variables
 
-repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY"  # Windows path format
+repertoire = r"C:\Users\Avril\Desktop\Exo2PhysNum-SLAY" 
 executable = os.path.join(repertoire, "Exe.exe")
 os.chdir(repertoire)
 
@@ -36,7 +36,6 @@ m = params.get("m")
 L = params.get("L")
 w0 = np.sqrt(12 * mu * B0 / (m * L**2))
 
-# Define initial conditions (theta0, thetadot0)
 nsteps = np.array([1000], dtype=int)
 ci = np.array([
     [1.808796, 0],
@@ -49,7 +48,7 @@ nsimul = len(nsteps) * len(ci)
 
 paramstr1 = "nsteps"
 paramstr2 = "theta0"
-paramstr3 = "thetadot0"  # New parameter for thetadot0
+paramstr3 = "thetadot0"  
 
 outputs = []
 
@@ -83,18 +82,15 @@ for i in range(nsimul):
         thetas.append(data[:, 1])
         thetas_dot.append(data[:, 2])
 
-thetas = np.column_stack(thetas)  # Shape: (n_time_steps, n_simul)
-thetas_dot = np.column_stack(thetas_dot)  # Shape: (n_time_steps, n_simul)
+thetas = np.column_stack(thetas)  
+thetas_dot = np.column_stack(thetas_dot)  
 
 plt.figure(figsize=(8, 5))
 
-# Compute deltas
 delta1 = np.sqrt(w0**2 * (thetas[:, 1] - thetas[:, 0])**2 + (thetas_dot[:, 1] - thetas_dot[:, 0])**2)
 delta2 = np.sqrt(w0**2 * (thetas[:, 3] - thetas[:, 2])**2 + (thetas_dot[:, 3] - thetas_dot[:, 2])**2)
 
-# Logarithmic Fit (Optional - Uncomment if needed)
-
-slope1, intercept1 = np.polyfit(t, np.log(delta1), 1)  # Avoid log(0) by adding a small value
+slope1, intercept1 = np.polyfit(t, np.log(delta1), 1)  
 slope2, intercept2 = np.polyfit(t, np.log(delta2), 1)
 
 plt.plot(t, delta1, label=rf'$\delta_{{\theta_1}}, \ \lambda = {slope1:.3f}$')
